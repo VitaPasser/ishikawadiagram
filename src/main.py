@@ -22,10 +22,10 @@ class IshikawaDiagram:
     """
 
     def __init__(
-        self,
-        problem: Problem,
-        categories: List[Category],
-        config: DiagramConfig
+            self,
+            problem: Problem,
+            categories: List[Category],
+            config: DiagramConfig
     ):
         self._problem = problem
         self._categories = categories
@@ -64,11 +64,16 @@ class IshikawaDiagram:
         max_y_reach = 0
         x_attach = 0
 
+        categories_max_widths = [category.calculate_max_width(self._config) for category in self._categories]
+        if len(categories_max_widths) > 1:
+            categories_max_widths = [max(categories_max_widths[i - 1], categories_max_widths[i])
+                                     for i in range(1, len(categories_max_widths), 2)]
+
         for i, category in enumerate(self._categories):
             side = 1 if i % 2 == 0 else -1
 
             # Обновляем позицию крепления
-            x_attach += category.calculate_max_width(self._config) * ((i + 1) % 2)
+            x_attach += categories_max_widths[i // 2] * ((i + 1) % 2)
 
             # Вычисляем позиции ребра
             bone_start, bone_end = self._bone_calculator.calculate(
@@ -90,12 +95,12 @@ class IshikawaDiagram:
         return max_y_reach
 
     def _render_causes(
-        self,
-        ax: Axes,
-        category: Category,
-        bone_start: Point,
-        bone_end: Point,
-        side: int
+            self,
+            ax: Axes,
+            category: Category,
+            bone_start: Point,
+            bone_end: Point,
+            side: int
     ) -> None:
         """Отрисовывает причины категории."""
         dims = self._config.dimensions
