@@ -5,7 +5,7 @@ from src.domain.cause import Cause
 
 
 class Category:
-    """Категория причин (Domain Model)."""
+    """Category of causes (Domain Model)."""
 
     def __init__(self, name: str, causes: List[Cause]):
         self._name = name
@@ -13,21 +13,21 @@ class Category:
 
     @property
     def name(self) -> str:
-        """Возвращает название категории."""
+        """Returns category name."""
         return self._name
 
     @property
     def causes(self) -> List[Cause]:
-        """Возвращает список причин."""
+        """Returns list of causes."""
         return self._causes
 
     def calculate_total_height(self, config: DiagramConfig) -> float:
-        """Вычисляет общую высоту всех причин."""
+        """Calculates total height of all causes."""
         heights = [cause.calculate_height(config) for cause in self._causes]
         return sum(heights) + config.dimensions.y_unit
 
     def calculate_max_width(self, config: DiagramConfig) -> float:
-        """Вычисляет максимальную ширину текста причин."""
+        """Calculates maximum width of cause text."""
         dims = config.dimensions
         widths = [
             cause.max_line_length * dims.text_width_factor * dims.x_step

@@ -2,7 +2,7 @@ from src.dto.point import Point
 
 
 class CausePositionCalculator:
-    """Вычисляет позицию причины на ребре."""
+    """Calculates cause position on the bone."""
 
     def calculate_contact_point(
         self,
@@ -11,15 +11,15 @@ class CausePositionCalculator:
         bone_end: Point
     ) -> Point:
         """
-        Вычисляет точку касания причины с ребром категории.
+        Calculates contact point of cause with category bone.
 
         Args:
-            y_cause: Y-координата причины
-            bone_start: Начальная точка ребра
-            bone_end: Конечная точка ребра
+            y_cause: Y-coordinate of the cause
+            bone_start: Start point of the bone
+            bone_end: End point of the bone
 
         Returns:
-            Точка касания
+            Contact point
         """
         if bone_start.y == 0:
             t = 0

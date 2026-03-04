@@ -1,24 +1,24 @@
-"""Пример использования диаграммы Исикавы."""
+"""Example usage of Ishikawa diagram."""
 
 from main import draw_dynamic_ishikawa
 
 
 def main():
-    """Запуск примера с диаграммой."""
-    problem_name = "ОБРЫВ НИТИ"
+    """Run example with diagram."""
+    problem_name = "THREAD BREAK"
 
     data_set = {
-        "Машины": [
-            "Износ подшипника\nИзнос подшипника\nИзнос подшипника\nИзнос подшипника\nИзнос подшипника\nИзнос подшипника",
-            "Вибрация",
-            "Старая игла\nСтарая игла",
-            "Перегрев"
+        "Machines": [
+            "Bearing wear\nBearing wear\nBearing wear\nBearing wear\nBearing wear\nBearing wear",
+            "Vibration",
+            "Old needle\nOld needle",
+            "Overheating"
         ],
-        "Люди": ["Усталость"],
-        "Методы": ["Скорость выше нормы", "Нет смазки"],
-        "Материалы": ["Тонкая нить", "Брак сырья", "Влажность"],
-        "Среда": ["Пыль"],
-        "Измерения": ["Ошибка датчика", "Калибровка"]
+        "People": ["Fatigue"],
+        "Methods": ["Speed above normal", "No lubrication"],
+        "Materials": ["Thin thread", "Raw material defect", "Humidity"],
+        "Environment": ["Dust"],
+        "Measurements": ["Sensor error", "Calibration"]
     }
 
     draw_dynamic_ishikawa(problem_name, data_set)

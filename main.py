@@ -6,12 +6,12 @@ from src.domain.problem import Problem
 
 def draw_dynamic_ishikawa(problem: str, data: Dict[str, List[str]]) -> None:
     """
-    Функция-фасад для быстрого создания диаграммы.
-    Сохраняет обратную совместимость с предыдущим API.
+    Facade function for quick diagram creation.
+    Maintains backward compatibility with previous API.
 
     Args:
-        problem: Название проблемы для анализа
-        data: Словарь {категория: [список причин]}
+        problem: Problem name for analysis
+        data: Dictionary {category: [list of causes]}
     """
     builder = DiagramBuilder(Problem(problem))
 

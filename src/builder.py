@@ -9,8 +9,8 @@ from src.domain.problem import Problem
 
 class DiagramBuilder:
     """
-    Строитель диаграммы (Builder Pattern).
-    Упрощает создание сложных объектов.
+    Diagram builder (Builder Pattern).
+    Simplifies creation of complex objects.
     """
 
     def __init__(self, problem: Problem, config: DiagramConfig = None):
@@ -19,12 +19,12 @@ class DiagramBuilder:
         self._categories: List[Category] = []
 
     def add_category(self, name: str, causes: List[str]) -> 'DiagramBuilder':
-        """Добавляет категорию с причинами."""
+        """Adds category with causes."""
         cause_objects = [Cause(text) for text in causes]
         category = Category(name, cause_objects)
         self._categories.append(category)
         return self
 
     def build(self) -> 'IshikawaDiagram':
-        """Строит диаграмму."""
+        """Builds the diagram."""
         return IshikawaDiagram(self._problem, self._categories, self._config)

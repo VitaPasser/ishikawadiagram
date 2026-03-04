@@ -6,9 +6,9 @@ from src.configuration import DiagramConfig
 
 
 class Renderer(ABC):
-    """Абстрактный рендерер (Open/Closed, Dependency Inversion)."""
+    """Abstract renderer (Open/Closed, Dependency Inversion)."""
 
     @abstractmethod
     def render(self, ax: Axes, config: DiagramConfig) -> None:
-        """Отрисовывает элемент на осях."""
+        """Renders element on axes."""
         pass

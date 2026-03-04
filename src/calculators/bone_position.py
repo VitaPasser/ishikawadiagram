@@ -4,7 +4,7 @@ from src.dto.point import Point
 
 
 class BonePositionCalculator:
-    """Вычисляет позиции костей (рёбер) категорий."""
+    """Calculates positions of bones (ribs) for categories."""
 
     def calculate(
         self,
@@ -14,16 +14,16 @@ class BonePositionCalculator:
         config: DiagramConfig
     ) -> tuple[Point, Point]:
         """
-        Вычисляет начальную и конечную точки ребра.
+        Calculates start and end points of the bone.
 
         Args:
-            category: Категория для расчёта
-            x_attach: Точка крепления к хребту
-            side: Сторона (1 или -1)
-            config: Конфигурация диаграммы
+            category: Category for calculation
+            x_attach: Attachment point to the spine
+            side: Side (1 or -1)
+            config: Diagram configuration
 
         Returns:
-            Кортеж из начальной и конечной точки
+            Tuple of start and end points
         """
         dims = config.dimensions
         y_end = category.calculate_total_height(config) * side

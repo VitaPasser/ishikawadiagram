@@ -1,93 +1,93 @@
-# Диаграмма Исикавы (Ishikawa Diagram)
+# Ishikawa Diagram
 
-Библиотека для создания динамических диаграмм Исикавы (диаграмма "рыбья кость") на Python.
+A library for creating dynamic Ishikawa diagrams (fishbone diagrams) in Python.
 
-## Описание
+## Description
 
-Диаграмма Исикавы - это инструмент для анализа причинно-следственных связей, используемый в управлении качеством и решении проблем. Диаграмма визуализирует различные причины проблемы, группируя их по категориям.
+The Ishikawa diagram is a tool for analyzing cause-and-effect relationships, used in quality management and problem-solving. The diagram visualizes various causes of a problem by grouping them into categories.
 
-## Установка
+## Installation
 
-Требуется Python 3.7+ и библиотека matplotlib:
+Requires Python 3.7+ and the matplotlib library:
 
 ```bash
 pip install matplotlib
 ```
 
-## Использование
+## Usage
 
 ```python
 from main import draw_dynamic_ishikawa
 
-# Определяем проблему
-problem = "ОБРЫВ НИТИ"
+# Define the problem
+problem = "THREAD BREAK"
 
-# Определяем категории и причины
+# Define categories and causes
 data = {
-    "Машины": [
-        "Износ подшипника",
-        "Вибрация",
-        "Старая игла"
+    "Machines": [
+        "Bearing wear",
+        "Vibration",
+        "Old needle"
     ],
-    "Люди": [
-        "Усталость"
+    "People": [
+        "Fatigue"
     ],
-    "Методы": [
-        "Скорость выше нормы",
-        "Нет смазки"
+    "Methods": [
+        "Speed above normal",
+        "No lubrication"
     ],
-    "Материалы": [
-        "Тонкая нить",
-        "Брак сырья"
+    "Materials": [
+        "Thin thread",
+        "Raw material defect"
     ]
 }
 
-# Рисуем диаграмму
+# Draw the diagram
 draw_dynamic_ishikawa(problem, data)
 ```
 
-## Структура кода
+## Code Structure
 
-### Классы
+### Classes
 
 #### `IshikawaDiagramConfig`
-Класс конфигурации, содержащий все параметры диаграммы:
-- Размеры и расстояния
-- Стили стрелок
-- Размеры шрифтов
-- Коэффициенты масштабирования
+Configuration class containing all diagram parameters:
+- Sizes and distances
+- Arrow styles
+- Font sizes
+- Scaling factors
 
 #### `CategoryMetrics`
-Класс для вычисления метрик категории:
-- Высота причин
-- Ширина текста
+Class for calculating category metrics:
+- Cause height
+- Text width
 
-### Функции
+### Functions
 
-- `calculate_spine_length()` - вычисляет длину главного хребта
-- `draw_spine()` - рисует главный хребет диаграммы
-- `calculate_bone_position()` - вычисляет позицию ребра категории
-- `draw_category_bone()` - рисует ребро и название категории
-- `draw_cause()` - рисует отдельную причину
-- `draw_category_causes()` - рисует все причины категории
-- `draw_dynamic_ishikawa()` - главная функция для создания диаграммы
+- `calculate_spine_length()` - calculates main spine length
+- `draw_spine()` - draws the main spine of the diagram
+- `calculate_bone_position()` - calculates category bone position
+- `draw_category_bone()` - draws bone and category name
+- `draw_cause()` - draws individual cause
+- `draw_category_causes()` - draws all causes for a category
+- `draw_dynamic_ishikawa()` - main function for creating the diagram
 
-## Особенности
+## Features
 
-- **Динамическое масштабирование**: длина рёбер адаптируется к количеству причин
-- **Многострочный текст**: поддержка многострочных причин через `\n`
-- **Гибкая конфигурация**: легко изменить стили и размеры через класс конфигурации
-- **Автоматическое размещение**: категории автоматически размещаются с обеих сторон хребта
+- **Dynamic scaling**: bone length adapts to the number of causes
+- **Multi-line text**: support for multi-line causes using `\n`
+- **Flexible configuration**: easily change styles and sizes through the configuration class
+- **Automatic placement**: categories are automatically placed on both sides of the spine
 
-## Примеры
+## Examples
 
-Запустите файл `example.py` для просмотра примера использования:
+Run the `example.py` file to see an example usage:
 
 ```bash
 python example.py
 ```
 
-## Лицензия
+## License
 
 MIT
 

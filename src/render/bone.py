@@ -7,7 +7,7 @@ from src.render.render import Renderer
 
 
 class BoneRenderer(Renderer):
-    """Рендерер ребра категории."""
+    """Category bone renderer."""
 
     def __init__(self, category: Category, start: Point, end: Point, side: int):
         self._category = category
@@ -16,8 +16,8 @@ class BoneRenderer(Renderer):
         self._side = side
 
     def render(self, ax: Axes, config: DiagramConfig) -> None:
-        """Отрисовывает ребро и название категории."""
-        # Рисуем ребро
+        """Renders bone and category name."""
+        # Draw bone
         ax.annotate(
             '',
             xy=(self._end.x, self._end.y),
@@ -25,7 +25,7 @@ class BoneRenderer(Renderer):
             arrowprops=config.bone_arrow.to_dict()
         )
 
-        # Рисуем название категории
+        # Draw category name
         y_offset = 0.3 * self._side
         va = 'bottom' if self._side > 0 else 'top'
 

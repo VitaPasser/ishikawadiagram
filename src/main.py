@@ -17,8 +17,8 @@ from src.render.spine import SpineRenderer
 
 class IshikawaDiagram:
     """
-    Главный класс диаграммы Исикавы.
-    Координирует работу всех компонентов (Facade Pattern).
+    Main Ishikawa diagram class.
+    Coordinates the work of all components (Facade Pattern).
     """
 
     def __init__(
@@ -35,10 +35,10 @@ class IshikawaDiagram:
 
     def render(self) -> tuple[Figure, Axes]:
         """
-        Отрисовывает диаграмму.
+        Renders the diagram.
 
         Returns:
-            Кортеж из Figure и Axes
+            Tuple of Figure and Axes
         """
         spine_length = self._spine_calculator.calculate(
             len(self._categories),
@@ -47,20 +47,20 @@ class IshikawaDiagram:
 
         fig, ax = plt.subplots(figsize=(spine_length + 4, 8))
 
-        # Рисуем хребет
+        # Draw spine
         spine_renderer = SpineRenderer(spine_length, self._problem)
         spine_renderer.render(ax, self._config)
 
-        # Рисуем категории
+        # Draw categories
         max_y_reach = self._render_categories(ax)
 
-        # Настраиваем оси
+        # Configure axes
         self._configure_axes(ax, spine_length, max_y_reach)
 
         return fig, ax
 
     def _render_categories(self, ax: Axes) -> float:
-        """Отрисовывает все категории и их причины."""
+        """Renders all categories and their causes."""
         max_y_reach = 0
         x_attach = 0
 
@@ -72,10 +72,10 @@ class IshikawaDiagram:
         for i, category in enumerate(self._categories):
             side = 1 if i % 2 == 0 else -1
 
-            # Обновляем позицию крепления
+            # Update attachment position
             x_attach += categories_max_widths[i // 2] * ((i + 1) % 2)
 
-            # Вычисляем позиции ребра
+            # Calculate bone positions
             bone_start, bone_end = self._bone_calculator.calculate(
                 category,
                 x_attach,
@@ -85,11 +85,11 @@ class IshikawaDiagram:
 
             max_y_reach = max(max_y_reach, abs(bone_start.y))
 
-            # Рисуем ребро категории
+            # Draw category bone
             bone_renderer = BoneRenderer(category, bone_start, bone_end, side)
             bone_renderer.render(ax, self._config)
 
-            # Рисуем причины
+            # Draw causes
             self._render_causes(ax, category, bone_start, bone_end, side)
 
         return max_y_reach
@@ -102,12 +102,12 @@ class IshikawaDiagram:
             bone_end: Point,
             side: int
     ) -> None:
-        """Отрисовывает причины категории."""
+        """Renders category causes."""
         dims = self._config.dimensions
         y_cause = (-dims.y_unit - dims.y_unit * side) / 4 + (dims.y_unit * side)
 
         for cause in category.causes:
-            position = Point(0, y_cause)  # x не используется
+            position = Point(0, y_cause)  # x is not used
 
             cause_renderer = CauseRenderer(cause, position, bone_start, bone_end)
             cause_renderer.render(ax, self._config)
@@ -115,31 +115,24 @@ class IshikawaDiagram:
             y_cause += cause.calculate_height(self._config) * side
 
     def _configure_axes(self, ax: Axes, spine_length: float, max_y_reach: float) -> None:
-        """Настраивает оси и отображение."""
-        ax.set_xlim(-1, spine_length + 5)
-        ax.set_ylim(-max_y_reach - 2, max_y_reach + 2)
+        """Configures axes and display."""
+        ax.set_xlim(-1, spine_length + 1)
+        ax.set_ylim(-max_y_reach + 5, max_y_reach + 1)
         ax.axis('off')
-
-        plt.title(
-            "Динамическая диаграмма Исикавы",
-            fontsize=self._config.title_style.fontsize,
-            fontweight=self._config.title_style.fontweight,
-            pad=20
-        )
         plt.tight_layout()
 
     def show(self) -> None:
-        """Отображает диаграмму."""
+        """Displays the diagram."""
         self.render()
         plt.show()
 
     def save(self, filename: str, dpi: int = 300) -> None:
         """
-        Сохраняет диаграмму в файл.
+        Saves the diagram to a file.
 
         Args:
-            filename: Имя файла для сохранения
-            dpi: Разрешение изображения
+            filename: Filename for saving
+            dpi: Image resolution
         """
         fig, _ = self.render()
         fig.savefig(filename, dpi=dpi, bbox_inches='tight')

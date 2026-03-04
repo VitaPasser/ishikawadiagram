@@ -6,15 +6,15 @@ from src.render.render import Renderer
 
 
 class SpineRenderer(Renderer):
-    """Рендерер хребта диаграммы."""
+    """Diagram spine renderer."""
 
     def __init__(self, spine_length: float, problem: Problem):
         self._spine_length = spine_length
         self._problem = problem
 
     def render(self, ax: Axes, config: DiagramConfig) -> None:
-        """Отрисовывает хребет и проблему."""
-        # Рисуем стрелку хребта
+        """Renders spine and problem."""
+        # Draw spine arrow
         ax.annotate(
             '',
             xy=(self._spine_length, 0),
@@ -22,7 +22,7 @@ class SpineRenderer(Renderer):
             arrowprops=config.spine_arrow.to_dict()
         )
 
-        # Рисуем проблему
+        # Draw problem
         ax.text(
             self._spine_length + 0.1,
             0,

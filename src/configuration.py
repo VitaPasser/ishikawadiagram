@@ -5,8 +5,8 @@ from src.dto.arrow_style import ArrowStyle
 
 class DiagramConfig:
     """
-    Конфигурация диаграммы (Single Responsibility).
-    Отвечает только за хранение настроек.
+    Diagram configuration (Single Responsibility).
+    Responsible only for storing settings.
     """
 
     def __init__(
