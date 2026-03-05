@@ -22,8 +22,8 @@ class DiagramDefaults:
     CAUSE_LINEWIDTH = 1
 
     SPINE_COLOR = 'black'
-    BONE_COLOR = 'navy'
-    CAUSE_COLOR = 'gray'
+    BONE_COLOR = 'black'
+    CAUSE_COLOR = 'black'
 
     # Text styles
     TITLE_FONTSIZE = 16
