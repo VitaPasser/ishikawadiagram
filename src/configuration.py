@@ -23,8 +23,8 @@ class DiagramConfig:
         self.dimensions = dimensions or DiagramDimensions(
             x_step=3.0,
             y_unit=0.8,
-            angle_offset=1.5,
-            line_height_factor=0.5,
+            angle_offset=1.0,
+            line_height_factor=0.2,
             text_width_factor=0.0625,
             text_length_factor=0.08
         )

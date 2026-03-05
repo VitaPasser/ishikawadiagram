@@ -11,10 +11,12 @@ The Ishikawa diagram is a tool for analyzing cause-and-effect relationships, use
 Requires Python 3.7+ and the matplotlib library:
 
 ```bash
-pip install matplotlib
+pip install matplotlib pyyaml
 ```
 
 ## Usage
+
+### Method 1: Python Code
 
 ```python
 from main import draw_dynamic_ishikawa
@@ -46,6 +48,60 @@ data = {
 draw_dynamic_ishikawa(problem, data)
 ```
 
+### Method 2: YAML File (Recommended)
+
+Create a YAML file `diagram.yaml`:
+
+```yaml
+problem: "THREAD BREAK"
+
+categories:
+  Machines:
+    - Bearing wear
+    - Vibration
+    - Old needle
+  
+  People:
+    - Fatigue
+  
+  Methods:
+    - Speed above normal
+    - No lubrication
+  
+  Materials:
+    - Thin thread
+    - Raw material defect
+```
+
+Load and display:
+
+```python
+from src.loaders import YamlLoader
+from main import draw_dynamic_ishikawa
+
+# Load YAML and convert to dict format
+problem_name, data = YamlLoader.load('diagram.yaml')
+
+# Display diagram using facade function
+draw_dynamic_ishikawa(problem_name, data)
+```
+
+Alternative YAML format with explicit structure:
+
+```yaml
+problem: "THREAD BREAK"
+
+categories:
+  - name: Machines
+    causes:
+      - Bearing wear
+      - Vibration
+  
+  - name: People
+    causes:
+      - Fatigue
+```
+
 ## Code Structure
 
 ### Classes
@@ -74,18 +130,30 @@ Class for calculating category metrics:
 
 ## Features
 
+- **YAML Support**: Load diagrams from YAML files for easy data management
 - **Dynamic scaling**: bone length adapts to the number of causes
 - **Multi-line text**: support for multi-line causes using `\n`
 - **Flexible configuration**: easily change styles and sizes through the configuration class
 - **Automatic placement**: categories are automatically placed on both sides of the spine
+- **Multiple formats**: Support both dictionary and list-based YAML structures
 
 ## Examples
 
-Run the `example.py` file to see an example usage:
+Run the `example.py` file to see a basic usage:
 
 ```bash
 python example.py
 ```
+
+Run the `example_yaml.py` file to see YAML loading examples:
+
+```bash
+python example_yaml.py
+```
+
+Sample YAML files are provided:
+- `example_data.yaml` - Simple dictionary format
+- `example_data_list.yaml` - List format with explicit structure
 
 ## License
 

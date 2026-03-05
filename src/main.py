@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 
 from matplotlib import pyplot as plt
 from matplotlib.axes import Axes
@@ -40,34 +40,41 @@ class IshikawaDiagram:
         Returns:
             Tuple of Figure and Axes
         """
+        categories_max_widths = [category.calculate_max_width(self._config) for category in self._categories]
+        if len(categories_max_widths) > 1:
+            categories_max_widths = [max(categories_max_widths[i],
+                                         (categories_max_widths[i + 1] if i + 1 < len(categories_max_widths) else 0))
+                                     for i in range(0, len(categories_max_widths), 2)]
         spine_length = self._spine_calculator.calculate(
-            len(self._categories),
+            categories_max_widths,
             self._config
         )
 
-        fig, ax = plt.subplots(figsize=(spine_length + 4, 8))
+        fig, ax = plt.subplots(figsize=((spine_length if spine_length > 8 else spine_length + 4), 8))
 
         # Draw spine
         spine_renderer = SpineRenderer(spine_length, self._problem)
         spine_renderer.render(ax, self._config)
 
         # Draw categories
-        max_y_reach = self._render_categories(ax)
+        max_y_reach, min_y_reach = self._render_categories(ax)
 
         # Configure axes
-        self._configure_axes(ax, spine_length, max_y_reach)
+        self._configure_axes(ax, spine_length, max_y_reach, min_y_reach)
 
         return fig, ax
 
-    def _render_categories(self, ax: Axes) -> float:
+    def _render_categories(self, ax: Axes) -> Tuple[float, float]:
         """Renders all categories and their causes."""
         max_y_reach = 0
+        min_negative_y_reach = 0.0
         x_attach = 0
 
         categories_max_widths = [category.calculate_max_width(self._config) for category in self._categories]
         if len(categories_max_widths) > 1:
-            categories_max_widths = [max(categories_max_widths[i - 1], categories_max_widths[i])
-                                     for i in range(1, len(categories_max_widths), 2)]
+            categories_max_widths = [max(categories_max_widths[i],
+                                         (categories_max_widths[i+1] if i + 1 < len(categories_max_widths) else 0))
+                                     for i in range(0, len(categories_max_widths), 2)]
 
         for i, category in enumerate(self._categories):
             side = 1 if i % 2 == 0 else -1
@@ -84,6 +91,7 @@ class IshikawaDiagram:
             )
 
             max_y_reach = max(max_y_reach, abs(bone_start.y))
+            min_negative_y_reach = min(min_negative_y_reach, bone_start.y)
 
             # Draw category bone
             bone_renderer = BoneRenderer(category, bone_start, bone_end, side)
@@ -92,7 +100,7 @@ class IshikawaDiagram:
             # Draw causes
             self._render_causes(ax, category, bone_start, bone_end, side)
 
-        return max_y_reach
+        return max_y_reach, min_negative_y_reach
 
     def _render_causes(
             self,
@@ -114,10 +122,10 @@ class IshikawaDiagram:
 
             y_cause += cause.calculate_height(self._config) * side
 
-    def _configure_axes(self, ax: Axes, spine_length: float, max_y_reach: float) -> None:
+    def _configure_axes(self, ax: Axes, spine_length: float, max_y_reach: float, min_negative_y_reach: float) -> None:
         """Configures axes and display."""
-        ax.set_xlim(-1, spine_length + 1)
-        ax.set_ylim(-max_y_reach + 5, max_y_reach + 1)
+        ax.set_xlim(-1, spine_length)
+        ax.set_ylim(min_negative_y_reach, max_y_reach)
         ax.axis('off')
         plt.tight_layout()
 

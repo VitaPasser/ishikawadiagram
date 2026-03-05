@@ -1,0 +1,34 @@
+# Ishikawa Diagram - Thread Break Analysis
+# Simple dictionary format
+
+problem: "THREAD BREAK"
+
+categories:
+  Machines:
+    - Bearing wear
+    - Vibration
+    - Old needle
+    - Overheating
+
+  People:
+    - Fatigue
+    - Insufficient training
+
+  Methods:
+    - Speed above normal
+    - No lubrication
+    - Improper maintenance
+
+  Materials:
+    - Thin thread
+    - Raw material defect
+    - Humidity
+
+  Environment:
+    - Dust
+    - Temperature fluctuations
+
+  Measurements:
+    - Sensor error
+    - Calibration
+

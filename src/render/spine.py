@@ -12,18 +12,20 @@ class SpineRenderer(Renderer):
         self._spine_length = spine_length
         self._problem = problem
 
-    def render(self, ax: Axes, config: DiagramConfig) -> None:
+    def render(self, ax: Axes, config: DiagramConfig) -> float:
         """Renders spine and problem."""
         # Draw spine arrow
-        ax.annotate(
+        annotation = ax.annotate(
             '',
             xy=(self._spine_length, 0),
             xytext=(0, 0),
             arrowprops=config.spine_arrow.to_dict()
         )
 
+        length_annotation = annotation.axes.bbox.width
+
         # Draw problem
-        ax.text(
+        text = ax.text(
             self._spine_length + 0.1,
             0,
             f"  {self._problem.description}",
@@ -33,3 +35,7 @@ class SpineRenderer(Renderer):
             va='center',
             ha=config.problem_style.ha
         )
+
+        length_text = text.axes.bbox.width
+
+        return length_annotation + length_text

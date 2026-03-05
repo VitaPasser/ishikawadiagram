@@ -15,21 +15,23 @@ class BoneRenderer(Renderer):
         self._end = end
         self._side = side
 
-    def render(self, ax: Axes, config: DiagramConfig) -> None:
+    def render(self, ax: Axes, config: DiagramConfig) -> float:
         """Renders bone and category name."""
         # Draw bone
-        ax.annotate(
+        annotate = ax.annotate(
             '',
             xy=(self._end.x, self._end.y),
             xytext=(self._start.x, self._start.y),
             arrowprops=config.bone_arrow.to_dict()
         )
 
+        length_annotation = annotate.axes.bbox.height
+
         # Draw category name
         y_offset = 0.3 * self._side
         va = 'bottom' if self._side > 0 else 'top'
 
-        ax.text(
+        text = ax.text(
             self._start.x,
             self._start.y + y_offset,
             self._category.name,
@@ -38,3 +40,7 @@ class BoneRenderer(Renderer):
             ha=config.category_style.ha,
             va=va
         )
+
+        length_text = text.axes.bbox.height
+
+        return length_annotation + length_text
