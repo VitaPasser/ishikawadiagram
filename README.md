@@ -6,6 +6,8 @@ A library for creating dynamic Ishikawa diagrams (fishbone diagrams) in Python.
 
 The Ishikawa diagram is a tool for analyzing cause-and-effect relationships, used in quality management and problem-solving. The diagram visualizes various causes of a problem by grouping them into categories.
 
+![example.png](example.png)
+
 ## Installation
 
 Requires installed uv
@@ -16,7 +18,54 @@ uv sync
 
 ## Usage
 
-### Method 1: Python Code
+### Method 1: YAML File (Recommended)
+
+Create a YAML file `diagram.yaml`:
+
+```yaml
+problem: "THREAD BREAK"
+
+categories:
+  Machines:
+    - Bearing wear
+    - Vibration
+    - Old needle
+  
+  People:
+    - Fatigue
+  
+  Methods:
+    - Speed above normal
+    - No lubrication
+  
+  Materials:
+    - Thin thread
+    - Raw material defect
+```
+
+Load and save the diagram:
+
+```bash
+uv run main.py ./diagram.yaml ./diagram.png
+```
+
+Alternative YAML format with explicit structure:
+
+```yaml
+problem: "THREAD BREAK"
+
+categories:
+  - name: Machines
+    causes:
+      - Bearing wear
+      - Vibration
+  
+  - name: People
+    causes:
+      - Fatigue
+```
+
+### Method 2: Python Code
 
 ```python
 from main import draw_dynamic_ishikawa
@@ -46,60 +95,6 @@ data = {
 
 # Draw the diagram
 draw_dynamic_ishikawa(problem, data)
-```
-
-### Method 2: YAML File (Recommended)
-
-Create a YAML file `diagram.yaml`:
-
-```yaml
-problem: "THREAD BREAK"
-
-categories:
-  Machines:
-    - Bearing wear
-    - Vibration
-    - Old needle
-  
-  People:
-    - Fatigue
-  
-  Methods:
-    - Speed above normal
-    - No lubrication
-  
-  Materials:
-    - Thin thread
-    - Raw material defect
-```
-
-Load and display:
-
-```python
-from src.loaders import YamlLoader
-from main import draw_dynamic_ishikawa
-
-# Load YAML and convert to dict format
-problem_name, data = YamlLoader.load('diagram.yaml')
-
-# Display diagram using facade function
-draw_dynamic_ishikawa(problem_name, data)
-```
-
-Alternative YAML format with explicit structure:
-
-```yaml
-problem: "THREAD BREAK"
-
-categories:
-  - name: Machines
-    causes:
-      - Bearing wear
-      - Vibration
-  
-  - name: People
-    causes:
-      - Fatigue
 ```
 
 ## License
