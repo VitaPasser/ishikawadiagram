@@ -27,7 +27,7 @@ problem: "THREAD BREAK"
 
 categories:
   Machines:
-    - Bearing wear
+    - "Bearing wear\nBearing wear"
     - Vibration
     - Old needle
   
