@@ -96,11 +96,11 @@ def example_print_data():
 
 if __name__ == "__main__":
     # Run example
-    example_load_yaml()
+    # example_load_yaml()
 
     # Uncomment to try other examples:
     # example_load_yaml_list_format()
-    # example_load_yaml_from_string()
+    example_load_yaml_from_string()
     # example_print_data()
 
 

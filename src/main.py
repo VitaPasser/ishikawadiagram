@@ -5,6 +5,7 @@ from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 
 from src.calculators.bone_position import BonePositionCalculator
+from src.calculators.category_size import CategorySizeCalculator
 from src.calculators.spine_length import SpineLengthCalculator
 from src.configuration import DiagramConfig
 from src.domain.category import Category
@@ -32,6 +33,7 @@ class IshikawaDiagram:
         self._config = config
         self._spine_calculator = SpineLengthCalculator()
         self._bone_calculator = BonePositionCalculator()
+        self._size_calculator = CategorySizeCalculator()
 
     def render(self) -> tuple[Figure, Axes]:
         """
@@ -40,11 +42,7 @@ class IshikawaDiagram:
         Returns:
             Tuple of Figure and Axes
         """
-        categories_max_widths = [category.calculate_max_width(self._config) for category in self._categories]
-        if len(categories_max_widths) > 1:
-            categories_max_widths = [max(categories_max_widths[i],
-                                         (categories_max_widths[i + 1] if i + 1 < len(categories_max_widths) else 0))
-                                     for i in range(0, len(categories_max_widths), 2)]
+        categories_max_widths = self._get_grouped_category_widths()
         spine_length = self._spine_calculator.calculate(
             categories_max_widths,
             self._config
@@ -64,17 +62,18 @@ class IshikawaDiagram:
 
         return fig, ax
 
+    def _get_grouped_category_widths(self) -> List[float]:
+        """Calculates and groups category widths."""
+        widths = self._size_calculator.calculate_widths(self._categories, self._config)
+        return self._size_calculator.group_widths(widths)
+
     def _render_categories(self, ax: Axes) -> Tuple[float, float]:
         """Renders all categories and their causes."""
         max_y_reach = 0
         min_negative_y_reach = 0.0
         x_attach = 0
 
-        categories_max_widths = [category.calculate_max_width(self._config) for category in self._categories]
-        if len(categories_max_widths) > 1:
-            categories_max_widths = [max(categories_max_widths[i],
-                                         (categories_max_widths[i+1] if i + 1 < len(categories_max_widths) else 0))
-                                     for i in range(0, len(categories_max_widths), 2)]
+        categories_max_widths = self._get_grouped_category_widths()
 
         for i, category in enumerate(self._categories):
             side = 1 if i % 2 == 0 else -1

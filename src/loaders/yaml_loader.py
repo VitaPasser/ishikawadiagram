@@ -5,6 +5,8 @@ from typing import Dict, List, Tuple, Union
 
 import yaml
 
+from src.loaders.yaml_parser import YamlDataParser
+
 
 class YamlLoader:
     """Loads Ishikawa diagram data from YAML files and converts to dict format."""
@@ -35,7 +37,7 @@ class YamlLoader:
         with open(file_path, 'r', encoding='utf-8') as f:
             data = yaml.safe_load(f)
 
-        return YamlLoader._parse_yaml_data(data)
+        return YamlDataParser.parse_yaml_data(data)
 
     @staticmethod
     def load_from_string(yaml_content: str) -> Tuple[str, Dict[str, List[str]]]:
@@ -53,53 +55,5 @@ class YamlLoader:
             ValueError: If required fields are missing
         """
         data = yaml.safe_load(yaml_content)
-        return YamlLoader._parse_yaml_data(data)
-
-    @staticmethod
-    def _parse_yaml_data(data: dict) -> Tuple[str, Dict[str, List[str]]]:
-        """
-        Parses YAML data and converts to (problem_name, data_dict) format.
-
-        Args:
-            data: Parsed YAML data
-
-        Returns:
-            Tuple of (problem_name, data_dict)
-        """
-        if not data:
-            raise ValueError("Empty YAML data")
-
-        if 'problem' not in data:
-            raise ValueError("Missing required field: 'problem'")
-
-        if 'categories' not in data:
-            raise ValueError("Missing required field: 'categories'")
-
-        problem_name = data['problem']
-        categories = data['categories']
-
-        # Convert to simple dict format: {category: [cause1, cause2, ...]}
-        if isinstance(categories, dict):
-            # Dict format: {"Category Name": ["cause1", "cause2"]}
-            data_dict = {k: v if isinstance(v, list) else [v]
-                        for k, v in categories.items()}
-        elif isinstance(categories, list):
-            # List format: [{"name": "Category", "causes": ["cause1"]}]
-            data_dict = {}
-            for category in categories:
-                if not isinstance(category, dict):
-                    raise ValueError(f"Invalid category format: {category}")
-
-                if 'name' not in category:
-                    raise ValueError("Category missing 'name' field")
-
-                causes = category.get('causes', [])
-                if not isinstance(causes, list):
-                    causes = [causes]
-
-                data_dict[category['name']] = causes
-        else:
-            raise ValueError("'categories' must be a dict or list")
-
-        return problem_name, data_dict
+        return YamlDataParser.parse_yaml_data(data)
 
